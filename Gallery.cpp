@@ -35,10 +35,12 @@ int main(void)
 
 	// initialize album manager
 	AlbumManager albumManager(dataAccess);
-
+	time_t now = time(nullptr);
 
 	std::string albumName;
 	std::cout << "Welcome to Gallery!" << std::endl;
+	std::cout << "  Made by Barr Kirel" << std::endl;
+	std::cout << "  " <<std::put_time(localtime(&now), "%d/%m/%Y %H:%M:%S") << std::endl;
 	std::cout << "===================" << std::endl;
 	std::cout << "Type " << HELP << " to a list of all supported commands" << std::endl;
 	
