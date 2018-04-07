@@ -1,8 +1,12 @@
 #include <iostream>
 #include <string>
+#include "DatabaseAccess.h"
 #include "MemoryAccess.h"
 #include "AlbumManager.h"
 
+#define MEMORY_MODE 0
+#define SQL_MODE 1
+#define MODE SQL_MODE
 
 int getCommandNumberFromUser()
 {
@@ -31,10 +35,23 @@ int getCommandNumberFromUser()
 int main(void)
 {
 	// initialization data access
-	MemoryAccess dataAccess;
+	IDataAccess* dataAccess = nullptr;
+
+	switch(MODE)
+	{
+	case MEMORY_MODE:
+		dataAccess = new MemoryAccess;
+		break;
+	case SQL_MODE:
+		dataAccess = new DatabaseAccess;
+		break;
+	default:
+		dataAccess = new MemoryAccess;
+		break;
+	}
 
 	// initialize album manager
-	AlbumManager albumManager(dataAccess);
+	AlbumManager albumManager(*dataAccess);
 	time_t now = time(nullptr);
 
 	std::string albumName;
@@ -54,6 +71,7 @@ int main(void)
 		}
 	} 
 	while (true);
+	delete dataAccess;
 }
 
 
