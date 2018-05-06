@@ -11,7 +11,7 @@ bool DatabaseAccess::open()
 		_db = nullptr;
 		return false;
 	}
-	if (!doesFileExist)
+	if (doesFileExist == -1)
 	{
 		if (!runQuery("CREATE TABLE USERS (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,NAME TEXT NOT NULL);"))
 		{
@@ -50,7 +50,7 @@ void DatabaseAccess::createUser(User & user)
 	const static char* query = "INSERT INTO USERS (ID, NAME) VALUES (?, ?)";
 	const char* name = user.getName().c_str();
 	int id = user.getId();
-	if (exec(_db, query, nullptr, nullptr, nullptr, "IT", { &name, &id }) != SQLITE_OK)
+	if (exec(_db, query, nullptr, nullptr, nullptr, "IT", { &id, &name }) != SQLITE_OK)
 	{
 
 		std::cerr << "Couldn't add user" << std::endl;
